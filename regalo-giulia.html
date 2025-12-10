@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Un regalo per te 💙</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --beige: #F5E6D3;
+            --beige-dark: #E8D4BC;
+            --beige-light: #FDF8F3;
+            --text-dark: #2D2A26;
+            --text-medium: #6B5B4F;
+            --accent: #7BA3A8;
+            --whale-color: #5A8F97;
+            --whale-belly: #A8C9CE;
+        }
+
+        html {
+            scroll-behavior: auto;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--beige);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Intro Section */
+        .intro-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: linear-gradient(180deg, var(--beige-light) 0%, var(--beige) 100%);
+        }
+
+        .intro-text {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2rem, 7vw, 5rem);
+            font-weight: 700;
+            text-align: center;
+            color: var(--text-dark);
+            opacity: 0;
+            animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            padding: 0 2rem;
+        }
+
+        .intro-text span {
+            color: var(--whale-color);
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 1.5s forwards;
+            cursor: pointer;
+        }
+
+        .scroll-hint span {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-medium);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .scroll-arrow {
+            width: 20px;
+            height: 20px;
+            border-right: 2px solid var(--whale-color);
+            border-bottom: 2px solid var(--whale-color);
+            transform: rotate(45deg);
+            animation: bounce 2s infinite;
+        }
+
+        /* Scroll Animation Section */
+        .scroll-section {
+            height: 300vh;
+            position: relative;
+            background: var(--beige);
+        }
+
+        .sticky-container {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Centered content container */
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        /* Progressive reveal for each element */
+        .reveal-item {
+            opacity: 0;
+            transform: translateY(30px);
+            will-change: transform, opacity;
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+
+        /* Whale SVG styles */
+        .whale-svg {
+            filter: drop-shadow(0 15px 30px rgba(90, 143, 151, 0.2));
+        }
+
+        .whale-small {
+            width: clamp(80px, 15vw, 150px);
+        }
+
+        .whale-large {
+            width: clamp(180px, 40vw, 400px);
+        }
+
+        .whale-body {
+            fill: var(--whale-color);
+        }
+
+        .whale-belly {
+            fill: var(--whale-belly);
+        }
+
+        .whale-eye {
+            fill: #2D4A4F;
+        }
+
+        .whale-smile {
+            stroke: #2D4A4F;
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+        }
+
+        .whale-spout {
+            fill: #A8C9CE;
+            opacity: 0;
+            animation: spout 3s ease-in-out infinite;
+        }
+
+        .bubble {
+            fill: rgba(168, 201, 206, 0.7);
+            animation: bubbleRise 3s ease-in-out infinite;
+        }
+
+        .bubble:nth-child(2) { animation-delay: 0.5s; }
+        .bubble:nth-child(3) { animation-delay: 1s; }
+
+        /* Floating animation for whales */
+        .whale-float {
+            animation: whaleFloat 3s ease-in-out infinite;
+        }
+
+        .whale-float-reverse {
+            animation: whaleFloatReverse 3.5s ease-in-out infinite;
+        }
+
+        /* Reveal Text */
+        .reveal-text {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(1.5rem, 5vw, 3.5rem);
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+            text-align: center;
+            padding: 0 1rem;
+        }
+
+        .reveal-text .highlight {
+            color: var(--whale-color);
+            display: block;
+            font-size: 1.1em;
+            margin-top: 0.1em;
+        }
+
+        .reveal-text .date {
+            display: block;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.35em;
+            font-weight: 500;
+            color: var(--text-medium);
+            margin-top: 1em;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        /* Scroll hint for section 2 */
+        .scroll-hint-section {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+            opacity: 0;
+            cursor: pointer;
+            transition: opacity 0.4s ease;
+        }
+
+        .scroll-hint-section.visible {
+            opacity: 1;
+        }
+
+        .scroll-hint-section span {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-medium);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .scroll-hint-section .scroll-arrow {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Final Section */
+        .final-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: linear-gradient(180deg, var(--beige) 0%, var(--beige-light) 100%);
+            overflow: hidden;
+        }
+
+        .final-text {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2.5rem, 10vw, 7rem);
+            font-weight: 800;
+            color: var(--whale-color);
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+            will-change: transform, opacity;
+            letter-spacing: -0.02em;
+        }
+
+        .final-text.visible {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .love-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-weight: 400;
+            color: var(--text-medium);
+            text-align: center;
+            opacity: 0;
+            transform: translateY(10px);
+            will-change: transform, opacity;
+            margin-top: 1rem;
+        }
+
+        .love-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hearts-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+        }
+
+        .heart {
+            position: absolute;
+            bottom: 0;
+            font-size: 2rem;
+            opacity: 0;
+            will-change: transform, opacity;
+            animation: heartFloat 5s ease-out forwards;
+        }
+
+        /* Progress indicator */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--whale-color);
+            width: 0%;
+            z-index: 100;
+            will-change: width;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: rotate(45deg) translateY(0); }
+            40% { transform: rotate(45deg) translateY(8px); }
+            60% { transform: rotate(45deg) translateY(4px); }
+        }
+
+        @keyframes whaleFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+
+        @keyframes whaleFloatReverse {
+            0%, 100% { transform: translateY(0) rotate(0deg) scaleX(-1); }
+            50% { transform: translateY(-6px) rotate(-2deg) scaleX(-1); }
+        }
+
+        @keyframes spout {
+            0%, 40%, 100% { opacity: 0; transform: translateY(0) scale(0.8); }
+            50%, 70% { opacity: 1; transform: translateY(-8px) scale(1); }
+        }
+
+        @keyframes bubbleRise {
+            0%, 40% { opacity: 0; transform: translateY(0) scale(0.5); }
+            50% { opacity: 0.8; transform: translateY(-15px) scale(1); }
+            100% { opacity: 0; transform: translateY(-30px) scale(0.3); }
+        }
+
+        @keyframes heartFloat {
+            0% {
+                opacity: 0;
+                transform: translateY(0) rotate(0deg) scale(0.5);
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(-10vh) rotate(45deg) scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-50vh) rotate(360deg) scale(1);
+            }
+            85% {
+                opacity: 0.8;
+                transform: translateY(-85vh) rotate(540deg) scale(0.9);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) rotate(720deg) scale(0.8);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Intro Section -->
+    <section class="intro-section">
+        <h1 class="intro-text">Quale sarà il tuo <span>regalo</span>?</h1>
+        <div class="scroll-hint" id="scrollHint">
+            <span>Scorri</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- Scroll Animation Section -->
+    <section class="scroll-section" id="scrollSection">
+        <div class="sticky-container">
+            <!-- Centered content with whales and text -->
+            <div class="content-wrapper" id="contentWrapper">
+                <!-- Small whale on top -->
+                <div class="reveal-item whale-small-container">
+                    <div class="whale-float-reverse">
+                        <svg class="whale-svg whale-small" viewBox="0 0 400 140">
+                            <ellipse class="whale-body" cx="180" cy="70" rx="150" ry="50"/>
+                            <ellipse class="whale-belly" cx="140" cy="85" rx="90" ry="30"/>
+                            <path class="whale-body" d="M330 70 Q380 35 365 70 Q380 105 330 70"/>
+                            <path class="whale-body" d="M355 50 Q400 20 380 60"/>
+                            <path class="whale-body" d="M355 90 Q400 120 380 80"/>
+                            <ellipse class="whale-body" cx="200" cy="45" rx="30" ry="10" transform="rotate(-15 200 45)"/>
+                            <ellipse class="whale-body" cx="120" cy="95" rx="25" ry="8" transform="rotate(20 120 95)"/>
+                            <circle class="whale-eye" cx="55" cy="60" r="7"/>
+                            <circle cx="53" cy="58" r="2.5" fill="white"/>
+                            <path class="whale-smile" d="M40 78 Q52 90 68 82"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Text -->
+                <div class="reveal-item text-container">
+                    <h2 class="reveal-text">
+                        Topeko ti fa volare in
+                        <span class="highlight">Argentina! 🐋</span>
+                        <span class="date">periodo tra Agosto – Dicembre 2026</span>
+                    </h2>
+                </div>
+
+                <!-- Large whale on bottom -->
+                <div class="reveal-item whale-large-container">
+                    <div class="whale-float">
+                        <svg class="whale-svg whale-large" viewBox="0 0 400 140">
+                            <ellipse class="whale-body" cx="180" cy="70" rx="150" ry="50"/>
+                            <ellipse class="whale-belly" cx="140" cy="85" rx="90" ry="30"/>
+                            <path class="whale-body" d="M330 70 Q380 35 365 70 Q380 105 330 70"/>
+                            <path class="whale-body" d="M355 50 Q400 20 380 60"/>
+                            <path class="whale-body" d="M355 90 Q400 120 380 80"/>
+                            <ellipse class="whale-body" cx="200" cy="45" rx="30" ry="10" transform="rotate(-15 200 45)"/>
+                            <ellipse class="whale-body" cx="120" cy="95" rx="25" ry="8" transform="rotate(20 120 95)"/>
+                            <circle class="whale-eye" cx="55" cy="60" r="7"/>
+                            <circle cx="53" cy="58" r="2.5" fill="white"/>
+                            <path class="whale-smile" d="M40 78 Q52 90 68 82"/>
+                            <g class="whale-spout">
+                                <ellipse cx="70" cy="15" rx="7" ry="10"/>
+                                <ellipse cx="60" cy="8" rx="5" ry="8"/>
+                                <ellipse cx="80" cy="10" rx="4" ry="7"/>
+                            </g>
+                            <circle class="bubble" cx="25" cy="55" r="4"/>
+                            <circle class="bubble" cx="18" cy="68" r="3"/>
+                            <circle class="bubble" cx="30" cy="75" r="2.5"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scroll hint for this section -->
+            <div class="scroll-hint-section" id="scrollHintSection">
+                <span>Scorri</span>
+                <div class="scroll-arrow"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Section -->
+    <section class="final-section" id="finalSection">
+        <div class="hearts-container" id="heartsContainer"></div>
+        <h2 class="final-text" id="finalText">Auguri Giulia! 💙</h2>
+        <p class="love-text" id="loveText">Ti amo</p>
+    </section>
+
+    <script>
+        const scrollSection = document.getElementById('scrollSection');
+        const contentWrapper = document.getElementById('contentWrapper');
+        const revealItems = document.querySelectorAll('.reveal-item');
+        const scrollHintSection = document.getElementById('scrollHintSection');
+        const finalSection = document.getElementById('finalSection');
+        const finalText = document.getElementById('finalText');
+        const loveText = document.getElementById('loveText');
+        const heartsContainer = document.getElementById('heartsContainer');
+        const progressBar = document.getElementById('progressBar');
+        const scrollHint = document.getElementById('scrollHint');
+
+        let finalAnimationTriggered = false;
+        let ticking = false;
+
+        function easeInOutCubic(t) {
+            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+
+        function updateAnimations() {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            
+            // Update progress bar
+            const totalScroll = documentHeight - windowHeight;
+            const progress = (scrollY / totalScroll) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Scroll section calculations
+            const scrollSectionRect = scrollSection.getBoundingClientRect();
+            const scrollSectionTop = scrollSectionRect.top + scrollY;
+            const scrollSectionHeight = scrollSectionRect.height - windowHeight;
+            
+            // Calculate progress within scroll section (0 to 1)
+            const sectionProgress = Math.max(0, Math.min(1, 
+                (scrollY - scrollSectionTop + windowHeight) / (scrollSectionHeight + windowHeight)
+            ));
+
+            // Progressive reveal of items based on scroll progress
+            // Small whale appears first, then text, then large whale
+            const thresholds = [0.12, 0.20, 0.28]; // Different thresholds for each item
+            
+            revealItems.forEach((item, index) => {
+                if (sectionProgress > thresholds[index] && sectionProgress < 0.9) {
+                    item.classList.add('visible');
+                } else {
+                    item.classList.remove('visible');
+                }
+            });
+
+            // Show scroll hint when content is visible
+            if (sectionProgress > 0.3 && sectionProgress < 0.85) {
+                scrollHintSection.classList.add('visible');
+            } else {
+                scrollHintSection.classList.remove('visible');
+            }
+
+            // Final section animation - triggers immediately on scroll
+            const finalSectionRect = finalSection.getBoundingClientRect();
+            if (finalSectionRect.top < windowHeight * 0.6 && !finalAnimationTriggered) {
+                finalAnimationTriggered = true;
+                finalText.classList.add('visible');
+                createHearts();
+                
+                // Show "Ti amo" after 1 second
+                setTimeout(() => {
+                    loveText.classList.add('visible');
+                }, 1000);
+            }
+
+            ticking = false;
+        }
+
+        function onScroll() {
+            if (!ticking) {
+                requestAnimationFrame(updateAnimations);
+                ticking = true;
+            }
+        }
+
+        function createHearts() {
+            const emojis = ['💙', '🐋', '✨', '💫', '🩵', '🤍', '🌊'];
+            for (let i = 0; i < 25; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    heart.style.left = `${5 + Math.random() * 90}%`;
+                    heart.style.bottom = '0';
+                    heart.style.animationDuration = `${4 + Math.random() * 3}s`;
+                    heart.style.fontSize = `${1.5 + Math.random() * 2}rem`;
+                    heartsContainer.appendChild(heart);
+
+                    setTimeout(() => heart.remove(), 8000);
+                }, i * 150);
+            }
+        }
+
+        // Event listeners
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateAnimations);
+                ticking = true;
+            }
+        });
+
+        // Scroll hint clicks
+        scrollHint.addEventListener('click', () => {
+            window.scrollTo({
+                top: window.innerHeight,
+                behavior: 'smooth'
+            });
+        });
+
+        scrollHintSection.addEventListener('click', () => {
+            const finalSectionTop = finalSection.offsetTop;
+            window.scrollTo({
+                top: finalSectionTop,
+                behavior: 'smooth'
+            });
+        });
+
+        // Initial update
+        updateAnimations();
+    </script>
+</body>
+</html>
